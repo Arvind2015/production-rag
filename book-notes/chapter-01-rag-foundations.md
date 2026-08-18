@@ -58,14 +58,16 @@ the user's question inside each document and rank documents according to the
 number of matching words.
 
 Although this approach is extremely limited, it provides an important
-baseline. It also exposes a fundamental problem: words that are different
-lexically may still have similar meanings.
+baseline. More importantly, building it ourselves allows us to see exactly
+what a retrieval system is doing.
 
-For example, a user might ask about "caching" while a document describes
-"keeping frequently accessed data in memory."
+### Building a Keyword Retriever
 
-A keyword-based system may fail to recognise that these statements are
-related.
+Consider a small collection of documents:
 
-This limitation leads naturally to the idea of semantic representations,
-which is where embeddings become useful.
+```text
+Redis is an in-memory data store commonly used for caching.
+
+Kafka is a distributed event streaming platform.
+
+PostgreSQL is a relational database system.
