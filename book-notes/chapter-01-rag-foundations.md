@@ -1,4 +1,4 @@
-# What Problem Does RAG Solve?
+# Chapter 1 — Foundations
 
 Retrieval-Augmented Generation (RAG) combines information retrieval with
 language-model generation.
@@ -71,3 +71,5 @@ Redis is an in-memory data store commonly used for caching.
 Kafka is a distributed event streaming platform.
 
 PostgreSQL is a relational database system.
+
+Redis keeps frequently accessed data in memory so applications can retrieve it quickly.
