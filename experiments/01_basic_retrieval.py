@@ -60,3 +60,25 @@ def inverse_document_frequency(term, documents):
 print("IDF redis:", inverse_document_frequency("redis", documents))
 print("IDF is:", inverse_document_frequency("is", documents))
 print("IDF caching:", inverse_document_frequency("caching", documents))
+
+def tf_idf(term, document, documents):
+    tf = term_frequency(document)[term]
+    idf = inverse_document_frequency(term, documents)
+
+    return tf * idf
+
+def score_document(query, document, documents):
+    query_terms = set(tokenize(query))
+
+    score = 0.0
+
+    for term in query_terms:
+        score += tf_idf(term, document, documents)
+
+    return score
+
+print("\nTF-IDF document scores:")
+
+for document in documents:
+    score = score_document(query, document, documents)
+    print(f"{score:.3f} - {document}")    
