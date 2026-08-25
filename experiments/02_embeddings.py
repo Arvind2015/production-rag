@@ -1,31 +1,25 @@
 import math
-
+from sentence_transformers import SentenceTransformer
 
 
 texts = [
     "Redis is used for caching.",
-    "Redis stores frequently accessed data in memory.",
+    "Redis keeps frequently accessed information readily available.",
     "Kafka processes distributed events.",
     "PostgreSQL stores relational data."
 ]
 
 
-def toy_embedding(text):
-    text = text.lower()
+model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
-    caching = 1.0 if "caching" in text or "cache" in text else 0.0
-    memory = 1.0 if "memory" in text or "stores" in text else 0.0
-    events = 1.0 if "kafka" in text or "events" in text else 0.0
+embeddings = model.encode(texts)
 
-    return [caching, memory, events]
-
-
-for text in texts:
-    vector = toy_embedding(text)
-
+for text, embedding in zip(texts, embeddings):
     print(text)
-    print(vector)
+    print("Vector dimensions:", len(embedding))
+    print("First 10 values:", embedding[:10])
     print()
+
 
 def cosine_similarity(vector_a, vector_b):
     dot_product = sum(
@@ -44,20 +38,22 @@ def cosine_similarity(vector_a, vector_b):
     if magnitude_a == 0 or magnitude_b == 0:
         return 0.0
 
-    return dot_product / (magnitude_a * magnitude_b)    
+    return dot_product / (magnitude_a * magnitude_b)
 
-query = "Redis keeps frequently accessed information readily available."
 
-query_vector = toy_embedding(query)
+#query = "Redis keeps frequently accessed information readily available."
+query = "Keep things snappy by throwing hot keys into Redis."
 
-print("Query:")
-print(query_vector)
+query_vector = model.encode([query])[0]
+
+print("Query vector:")
+print("Vector dimensions:", len(query_vector))
+print("First 10 values:", query_vector[:10])
 print()
 
 print("Similarities:")
 
-for text in texts:
-    vector = toy_embedding(text)
+for text, vector in zip(texts, embeddings):
 
     similarity = cosine_similarity(
         query_vector,
