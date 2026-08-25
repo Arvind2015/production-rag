@@ -82,3 +82,117 @@ print("\nTF-IDF document scores:")
 for document in documents:
     score = score_document(query, document, documents)
     print(f"{score:.3f} - {document}")    
+
+def document_vector(document, vocabulary, documents):
+    vector = []
+
+    for term in vocabulary:
+        vector.append(
+            tf_idf(term, document, documents)
+        )
+
+    return vector
+
+
+def build_vocabulary(documents):
+    vocabulary = set()
+
+    for document in documents:
+        vocabulary.update(tokenize(document))
+
+    return sorted(vocabulary)
+
+
+vocabulary = build_vocabulary(documents)
+
+print("\nVocabulary:")
+print(vocabulary)    
+
+
+def document_vector(document, vocabulary, documents):
+    vector = []
+
+    for term in vocabulary:
+        vector.append(
+            tf_idf(term, document, documents)
+        )
+
+    return vector
+
+document_1_vector = document_vector(
+    documents[0],
+    vocabulary,
+    documents
+)
+
+print("\nDocument 1 vector:")
+
+for position, term in enumerate(vocabulary):
+    value = document_1_vector[position]
+    print(f"{position:2}  {term:15}  {value:.3f}")
+
+query_vector = document_vector(
+    query,
+    vocabulary,
+    documents
+)
+
+print("\nQuery vector:")
+
+for position, term in enumerate(vocabulary):
+    value = query_vector[position]
+    print(f"{position:2}  {term:15}  {value:.3f}")
+
+
+def cosine_similarity(vector_a, vector_b):
+    dot_product = sum(
+        a * b
+        for a, b in zip(vector_a, vector_b)
+    )
+
+    magnitude_a = math.sqrt(
+        sum(a * a for a in vector_a)
+    )
+
+    magnitude_b = math.sqrt(
+        sum(b * b for b in vector_b)
+    )
+
+    if magnitude_a == 0 or magnitude_b == 0:
+        return 0.0
+
+    return dot_product / (magnitude_a * magnitude_b)
+
+    query_vector = document_vector(
+    query,
+    vocabulary,
+    documents
+)
+
+print("\nCosine similarities:")
+
+similarity_results = []
+
+for document in documents:
+    vector = document_vector(
+        document,
+        vocabulary,
+        documents
+    )
+
+    similarity = cosine_similarity(
+        query_vector,
+        vector
+    )
+
+    similarity_results.append((similarity, document))
+
+similarity_results.sort(
+    key=lambda x: x[0],
+    reverse=True
+)
+
+print("\nRanked results:")
+
+for score, document in similarity_results:
+    print(f"{score:.3f} - {document}")
