@@ -109,21 +109,6 @@ print("\nVocabulary:")
 print(vocabulary)    
 
 
-def document_vector(document, vocabulary, documents):
-    vector = []
-
-    for term in vocabulary:
-        vector.append(
-            tf_idf(term, document, documents)
-        )
-
-    return vector
-
-document_1_vector = document_vector(
-    documents[0],
-    vocabulary,
-    documents
-)
 
 print("\nDocument 1 vector:")
 
